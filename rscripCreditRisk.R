@@ -27,6 +27,41 @@ fold2.dfan.fft <- fast.frugal.tree("fold2_train.csv", "fold2_test.csv", "dfan", 
 fold3.dfan.fft <- fast.frugal.tree("fold3_train.csv", "fold3_test.csv", "dfan", 'Fold 3 FFT - Algo: dfan')
 # Plotting fold model tree
 plot(fold1.ifan.fft, data = "test")
+loan.test <- read.csv(file='fold1_test.csv', header=TRUE, sep=",")
+loan.test.csv <- read.csv(file='test.csv', header=TRUE, sep=",")
+a <- predict(fold1.ifan.fft, data=loan.test.csv )
+trim <- function (x) gsub("^\\s+|\\s+$", "", x)
+get <- function(x) {
+  x <- trim(x)
+  print(paste0("Current working dir: ", x))
+  if(x){
+    y <- 1
+  } else {
+    y <- 0
+  }
+  y
+}
+
+func2 <- function(vector) {
+  vr <- c() ### an empty vector 
+  for (i in 1:length(vector)) { 
+    x <- trim(vector[i])
+    print(paste0("Current working dir: ", x))
+    if(x == 'TRUE'){
+      vr[i] <- 0
+    } else {
+      vr[i] <- 1
+    }
+  }
+  vr
+}
+a
+x <- func2(a)
+
+MyData <-data.frame(loan.test.csv['customerid'], x)
+MyData
+write.csv(MyData, file = "MyData.csv" ,row.names=FALSE,col.names=FALSE)
+
 plot(fold2.ifan.fft, data = "test")
 plot(fold3.ifan.fft, data = "test")
 plot(fold1.dfan.fft, data = "test")
