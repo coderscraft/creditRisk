@@ -21,6 +21,11 @@ fast.frugal.tree <- function(trainFile, testFile, algo, info) {
 # Final model for train -
 fold1.ifan.fft <- fast.frugal.tree("fold1_train.csv", "seq_test.csv", "ifan", 'Train Model')
 plot(fold1.ifan.fft, data = "test")
+
+testData <- read.csv(file="processed_testdata.csv", header=TRUE, sep=",")
+a <- predict(fold1.ifan.fft, 
+        data = testData)
+
 trim <- function (x) gsub("^\\s+|\\s+$", "", x)
 ## True - 0 false - 1
 func2 <- function(vector) {
@@ -37,7 +42,7 @@ func2 <- function(vector) {
 }
 x <- func2(a)
 ## Creating submission file
-MyData <-data.frame(customerid=loan.test.csv['customerid'], Good_Bad_flag=x)
+MyData <-data.frame(customerid=testData['customerid'], Good_Bad_flag=x)
 write.csv(MyData, file = "kaggle-test.csv" ,row.names=FALSE)
 
 
